@@ -1,0 +1,11 @@
+# Build out agents
+
+# Overwrite check for init and remove check for rm
+
+# Clean up messages/help and flag information
+
+# template ls, get, rm, edit. create
+
+# comma separated templates
+
+# Improve logging errors, success initialize message (add emojis)
