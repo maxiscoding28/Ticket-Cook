@@ -1,0 +1,12 @@
+{
+	"filesToCreate": [
+		"scratch.sh",
+		"notes.md"
+	],
+	"filesToCopyDir": "",
+	"filesToCopy": [],
+	"filesToExecuteDir": "",
+	"filesToExecute": {
+        "file.sh": []
+    }
+}
