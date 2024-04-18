@@ -14,7 +14,7 @@ const DefaultTemplateJson = `{
 	],
 	"filesToCopyDir": "",
 	"filesToCopy": [],
-	"filesToExecute": "",
+	"filesToExecuteDir": "",
 	"filesToExecute": []
 }`
 

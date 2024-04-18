@@ -1,8 +1,10 @@
 package cmd
 
-import "fmt"
-
-const systemDefaultHomePath = "/Users/maxwinslow/dev/sandbox-go/tcmd/test"
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+)
 
 type HomeInfoStruct struct {
 	HomePath string
@@ -12,7 +14,7 @@ func (hi *HomeInfoStruct) setHomeDirectory(envVar envVarStruct) {
 	if envVar.exists {
 		hi.HomePath = envVar.value
 	} else {
-		hi.HomePath = systemDefaultHomePath
+		hi.HomePath = filepath.Join(os.Getenv("HOME"), "tcf")
 	}
 	log(fmt.Sprintf("Home directory: %s", hi.HomePath), nil)
 
