@@ -17,12 +17,21 @@
         removes recipe. Confirm operation
 
 Make more templates - add repo
-    - Vault dev
-    - Vault docker
-    - Vault Terraform Provider
+    - vault dev
+        - Shell scripts with vault server -dev commands
+    - vault docker
+        - docker run commands in shell
+        - docker-compose file
+        - docker-compose agent file
+    - vault terraform provider
+        - main.tf
     - Hvac
-    - Vault agent
-
+        - python project
+    - SEV
+        - sev notes and scripts
+        - call-notes.txt
+    - Sentinel
+        - sentinel stuff
 
 
 Readme/Docs
@@ -60,6 +69,11 @@ Autocompletion
 Docs
 
 0.2
+deep copy, copy directories
+
+Backup tickets to s3
+Backup recipes to github
+    // Recommend https://gitleaks.io/ action
 DO NOT backup tickets to Github
 Backup to s3
 Backup templates to Github or S3
