@@ -26,26 +26,20 @@ func log(message string, level string) {
 	colorReset := "\033[0m"
 
 	var color string
-	var logLevelIcon string
 
 	if level == "error" {
 		color = colorRed
-		logLevelIcon = emoji.RedCircle.String()
 	} else if level == "warn" {
 		color = colorYellow
-		logLevelIcon = emoji.YellowCircle.String()
 	} else if level == "success" {
 		color = colorGreen
-		logLevelIcon = emoji.GreenCircle.String()
 	} else if level == "info" {
 		color = colorBlue
-		logLevelIcon = emoji.BlueCircle.String()
 	} else {
 		color = colorReset
-		logLevelIcon = emoji.QuestionMark.String()
 	}
 
-	messageString := fmt.Sprintf("%s %s: %s%s%s", emoji.ManCook.String(), logLevelIcon, color, message, colorReset)
+	messageString := fmt.Sprintf("%s: %s%s%s", emoji.ManCook.String(), color, message, colorReset)
 	fmt.Println(messageString)
 }
 

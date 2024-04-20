@@ -73,7 +73,6 @@ func configureRecipe(recipePath string, recipeArg string) (*RecipeMapStruct, err
 		return nil, err
 	}
 
-	log("Recipe found", "success")
 	return recipeMap, nil
 }
 

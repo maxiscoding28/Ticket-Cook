@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -19,11 +20,23 @@ var reopenCmd = &cobra.Command{
 		if err != nil {
 			fatalError(err)
 		}
-		fmt.Print(homeInfo)
+		var ticket TicketStruct
+		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+			fatalError(err)
+		}
 
-		// Check if ticket exists in .closed/ directory
-		// If not throw error
-		// If yes move to tickets/ directory
+		ticketDirectoryPath := ticket.getPath(homeInfo.getClosedPath())
+
+		if err := fileOrDirectoryExists(ticketDirectoryPath); err != nil {
+			fatalError(err)
+		} else {
+			err := os.Rename(ticketDirectoryPath, ticket.getPath(homeInfo.getTicketsPath()))
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			log(fmt.Sprintf("Ticket reopened - %s", ticket.TicketId), "success")
+		}
 	},
 }
 

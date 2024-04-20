@@ -1,19 +1,4 @@
 
-# Close, reopen commands
-
-# Add closed flags
-
-// get, list, rm
-# Closed tickets directory
-    tck close [ticket id]
-    .closed/
-    tck ls --closed
-    tck get --closed
-    tck get --closed --all 
-    tck rm --closed
-    tcmd reopen [ticket id]
-
-
 # recipe ls, get, rm, edit. create
     tck recipe get --all open recipes directory
     tck recipe create [name] creates directory and default recipe.json file

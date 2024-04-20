@@ -26,13 +26,12 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		var newTicket TicketStruct
-
 		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
 
+		var newTicket TicketStruct
 		if err := newTicket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 			fatalError(err)
 		}
@@ -42,7 +41,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		ticketPath := newTicket.getTicketDirectory(homeInfo.getTicketsPath())
+		ticketPath := newTicket.getPath(homeInfo.getTicketsPath())
 
 		if err := fileOrDirectoryExists(ticketPath); err == nil {
 			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", ticketPath)

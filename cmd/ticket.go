@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 type TicketStruct struct {
@@ -28,7 +30,7 @@ func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct) error {
 	return nil
 }
 
-func (ts *TicketStruct) getTicketDirectory(ticketsPath string) string {
+func (ts *TicketStruct) getPath(ticketsPath string) string {
 	return ticketsPath + "/" + ts.TicketId
 }
 
@@ -72,4 +74,16 @@ func createMetaJson(ticketDirectoryPath string, description string, urlFormat st
 	}
 
 	return nil
+}
+
+func renderTickets(path string) {
+	files, err := readDirectory(path)
+	if err != nil {
+		fatalError(err)
+	}
+
+	t := createTable()
+	appendFilesToTable(files, t, path)
+	t.SetStyle(table.StyleLight)
+	t.Render()
 }

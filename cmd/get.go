@@ -15,52 +15,65 @@ var getCmd = &cobra.Command{
 	Short: "Open the given ticket in the ticket/ directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
+		closed, _ := cmd.Flags().GetBool("closed")
 		nav, _ := cmd.Flags().GetBool("nav")
 		all, _ := cmd.Flags().GetBool("all")
-
-		var ticket TicketStruct
 
 		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
 
-		// Handle all for tickets/ vs .closed/
+		var rootPath string
+		if closed {
+			rootPath = homeInfo.getClosedPath()
+		} else {
+			rootPath = homeInfo.getTicketsPath()
+		}
 		if all {
-			openDirectory(homeInfo.getTicketsPath(), envVars["TCK_EDITOR"])
+			openDirectory(rootPath, envVars["TCK_EDITOR"])
 			return
-		}
-
-		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
-			fatalError(err)
-		}
-		path := ticket.getTicketDirectory(homeInfo.getTicketsPath())
-
-		if err := openDirectory(path, envVars["TCK_EDITOR"]); err != nil {
-			fatalError(err)
-		}
-		if nav {
-			content, err := readFile(filepath.Join(path, "meta.json"))
-			if err != nil {
+		} else {
+			var ticket TicketStruct
+			if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 				fatalError(err)
 			}
-			meta, err := unMarshallMetadata(content)
-			if err != nil {
-				fatalError(err)
-			}
-			log(fmt.Sprintf("The `-nav` flag was set. Opening url: %s", meta["url"]), "info")
+			ticketPath := ticket.getPath(rootPath)
 
-			if err := openUrl(meta["url"]); err != nil {
+			if err := fileOrDirectoryExists(ticketPath); err == nil {
+				fmt.Println(ticketPath)
+				if err := openDirectory(ticketPath, envVars["TCK_EDITOR"]); err != nil {
+					fatalError(err)
+				}
+				log(fmt.Sprintf("Ticket directory opened: %s", ticket.TicketId), "success")
+				if nav {
+					content, err := readFile(filepath.Join(ticketPath, "meta.json"))
+					if err != nil {
+						fatalError(err)
+					}
+					meta, err := unMarshallMetadata(content)
+					if err != nil {
+						fatalError(err)
+					}
+					log(fmt.Sprintf("The `-nav` flag was set. Opening url: %s", meta["url"]), "info")
+
+					if err := openUrl(meta["url"]); err != nil {
+						fatalError(err)
+					}
+				}
+			} else {
 				fatalError(err)
 			}
+
 		}
+
 	},
 }
 
 func init() {
 	getCmd.Flags().BoolP("nav", "n", false, "Navigate to the ticket ID in theb browser.")
 	getCmd.Flags().BoolP("all", "a", false, "Open the full tickets/ directory in the editor")
-	getCmd.Flags().StringP("closed", "c", "", "Open the given tickets in the .closed/ directory")
+	getCmd.Flags().BoolP("closed", "c", false, "Open the given tickets in the .closed/ directory")
 
 	rootCmd.AddCommand(getCmd)
 }

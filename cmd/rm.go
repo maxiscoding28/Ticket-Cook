@@ -16,14 +16,16 @@ var rmCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
 
-		var ticket TicketStruct
-
 		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
 
-		ticketPath := ticket.getTicketDirectory(homeInfo.getTicketsPath())
+		var ticket TicketStruct
+		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+			fatalError(err)
+		}
+		ticketPath := ticket.getPath(homeInfo.getTicketsPath())
 
 		if err := fileOrDirectoryExists(ticketPath); err == nil {
 			removePrompt := fmt.Sprintf("Remove directory? %s?\nY to remove\nN to cancel", ticketPath)
@@ -31,7 +33,7 @@ var rmCmd = &cobra.Command{
 				fatalError(err)
 			}
 		}
-		if err := removeDirectory(ticket.getTicketDirectory(homeInfo.getTicketsPath())); err != nil {
+		if err := removeDirectory(ticket.getPath(homeInfo.getTicketsPath())); err != nil {
 			fatalError(err)
 		}
 		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", ticket.TicketId), "success")
