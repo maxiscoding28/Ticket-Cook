@@ -20,7 +20,7 @@ func fileOrDirectoryExists(pathToFileOrDirectory string) error {
 	return nil
 }
 
-func fileOrDirectoryDoesNotExist(err error) bool {
+func isFileNotFoundError(err error) bool {
 	return os.IsNotExist(err)
 }
 

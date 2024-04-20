@@ -8,26 +8,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const DefaultRecipeJson = `{
-	"filesToCreate": [
-		"scratch.sh",
-		"notes.md"
-	],
-	"filesToCopy": []
-}`
-
-type RecipeMapStruct struct {
-	FilesToCreate []string `json:"filesToCreate"`
-	FilesToCopy   []string `json:"filesToCopy"`
-}
-
 func globCopy(files []string) bool {
 	return len(files) == 1 && files[0] == "*"
 }
 
 func handleDefaultTemplate(recipeDirectory string, recipeJsonFilePath string) error {
 	if err := fileOrDirectoryExists(recipeDirectory); err != nil {
-		if fileOrDirectoryDoesNotExist(err) {
+		if isFileNotFoundError(err) {
 			if err := createDirectory(recipeDirectory); err != nil {
 				return err
 			}
@@ -36,7 +23,7 @@ func handleDefaultTemplate(recipeDirectory string, recipeJsonFilePath string) er
 		}
 	}
 	if err := fileOrDirectoryExists(recipeJsonFilePath); err != nil {
-		if fileOrDirectoryDoesNotExist(err) {
+		if isFileNotFoundError(err) {
 			if err := createDefaultRecipe(recipeJsonFilePath); err != nil {
 				return err
 			}
@@ -58,13 +45,13 @@ func configureRecipe(recipePath string, recipeArg string) (*RecipeMapStruct, err
 	}
 
 	if err := fileOrDirectoryExists(recipeDirectory); err != nil {
-		if fileOrDirectoryDoesNotExist(err) {
+		if isFileNotFoundError(err) {
 			return nil, fmt.Errorf("recipe directory doesn't exist: %s", recipeDirectory)
 		}
 		return nil, err
 	}
 	if err := fileOrDirectoryExists(recipeJsonFilePath); err != nil {
-		if fileOrDirectoryDoesNotExist(err) {
+		if isFileNotFoundError(err) {
 			return nil, fmt.Errorf("directory has no `recipe.json` file: %s", recipeDirectory)
 		}
 		return nil, err

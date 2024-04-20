@@ -6,10 +6,6 @@ import (
 	"github.com/enescakir/emoji"
 )
 
-type HomeInfoStruct struct {
-	HomePath string
-}
-
 func (hi *HomeInfoStruct) determineHomeDirectory(envVar envVarStruct) {
 	if envVar.exists {
 		hi.HomePath = envVar.value
@@ -23,15 +19,15 @@ func (hi *HomeInfoStruct) determineHomeDirectory(envVar envVarStruct) {
 
 }
 
-func (hi *HomeInfoStruct) getTicketsPath() string {
+func (hi HomeInfoStruct) getTicketsPath() string {
 	return hi.HomePath + "/tickets"
 }
 
-func (hi *HomeInfoStruct) getRecipesPath() string {
+func (hi HomeInfoStruct) getRecipesPath() string {
 	return hi.HomePath + "/recipes"
 }
 
-func (hi *HomeInfoStruct) getClosedPath() string {
+func (hi HomeInfoStruct) getClosedPath() string {
 	return hi.HomePath + "/.closed"
 }
 
@@ -39,7 +35,7 @@ func setHomeDirectory(envVar envVarStruct, bootstrap bool) (*HomeInfoStruct, err
 	var homeInfo HomeInfoStruct
 	homeInfo.determineHomeDirectory(envVar)
 	if err := fileOrDirectoryExists(homeInfo.HomePath); err != nil {
-		if fileOrDirectoryDoesNotExist(err) {
+		if isFileNotFoundError(err) {
 			if bootstrap {
 				tckBanner()
 			} else {
@@ -54,7 +50,7 @@ func setHomeDirectory(envVar envVarStruct, bootstrap bool) (*HomeInfoStruct, err
 		directories := []string{homeInfo.getTicketsPath(), homeInfo.getRecipesPath(), homeInfo.getClosedPath()}
 		for i := 0; i <= 2; i++ {
 			if err := fileOrDirectoryExists(directories[i]); err != nil {
-				if fileOrDirectoryDoesNotExist(err) {
+				if isFileNotFoundError(err) {
 					message := fmt.Sprintf("%s No %s directory was found so a new one was created: %s", emoji.Hospital, logSnippet[i], directories[i])
 					log(message, "success")
 					createDirectory(directories[i])

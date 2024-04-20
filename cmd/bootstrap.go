@@ -35,7 +35,7 @@ var bootstrapCmd = &cobra.Command{
 			fatalError(err)
 		}
 		if err := fileOrDirectoryExists(homeInfo.HomePath); err != nil {
-			if fileOrDirectoryDoesNotExist(err) {
+			if isFileNotFoundError(err) {
 				bootstrapDirectories(*homeInfo)
 			} else {
 				fatalError(err)

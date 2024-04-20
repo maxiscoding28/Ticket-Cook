@@ -10,13 +10,6 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
-type TicketStruct struct {
-	TicketId      string
-	DirectoryPath string
-	MetaDataPath  string
-	FilesToCreate []string
-}
-
 func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct) error {
 	if len(args) == 1 {
 		ts.TicketId = args[0]

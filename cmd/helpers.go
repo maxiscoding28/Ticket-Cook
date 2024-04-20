@@ -12,12 +12,6 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
-type envVarStruct struct {
-	envVar string
-	value  string
-	exists bool
-}
-
 func log(message string, level string) {
 	colorRed := "\033[31m"
 	colorYellow := "\033[33m"
