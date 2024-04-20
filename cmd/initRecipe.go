@@ -39,7 +39,10 @@ var initRecipeCmd = &cobra.Command{
 			fatalError(errors.New("exactly 1 recipe name argument is required"))
 		}
 
-		recipePath := filepath.Join(homeInfo.getRecipesPath(), args[0])
+		//  TODO: Make sure space doesn't exist
+
+		recipe := args[0]
+		recipePath := filepath.Join(homeInfo.getRecipesPath(), recipe)
 
 		if err := fileOrDirectoryExists(recipePath); err != nil {
 			if isFileNotFoundError(err) {

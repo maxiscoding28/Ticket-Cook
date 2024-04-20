@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -14,11 +15,37 @@ var getRecipeCmd = &cobra.Command{
 	Use:   "get",
 	Short: "Open the given recipe in the recipes/ directory",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("getRecipe called")
+		envVars := getEnvVars()
+		all, _ := cmd.Flags().GetBool("all")
+
+		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		if err != nil {
+			fatalError(err)
+		}
+		if all {
+			openDirectory(homeInfo.getRecipesPath(), envVars["TCK_EDITOR"])
+		} else {
+			// Verify one argument is passed
+
+			recipe := args[0]
+			recipePath := filepath.Join(homeInfo.getRecipesPath(), recipe)
+
+			if err := fileOrDirectoryExists(recipePath); err == nil {
+				if err := openDirectory(recipePath, envVars["TCK_EDITOR"]); err != nil {
+					fatalError(err)
+				}
+				log(fmt.Sprintf("Recipe directory opened: %s", recipe), "success")
+			} else {
+				fatalError(err)
+			}
+
+		}
 	},
 }
 
 func init() {
+	getRecipeCmd.Flags().BoolP("all", "a", false, "Open the full tickets/ directory in the editor")
+
 	recipeCmd.AddCommand(getRecipeCmd)
 
 	// Here you will define your flags and configuration settings.

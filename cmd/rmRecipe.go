@@ -28,11 +28,10 @@ var rmRecipeCmd = &cobra.Command{
 			fatalError(errors.New("exactly 1 recipe name argument is required"))
 		}
 
-		recipePath := filepath.Join(homeInfo.getRecipesPath(), args[0])
+		recipe := args[0]
+		recipePath := filepath.Join(homeInfo.getRecipesPath(), recipe)
 
-		// Make sure space doesn't exist
-
-		if args[0] == "default" {
+		if recipe == "default" {
 			fatalError(errors.New("default recipe cannot be removed"))
 		}
 
@@ -45,20 +44,10 @@ var rmRecipeCmd = &cobra.Command{
 		if err := removeDirectory(recipePath); err != nil {
 			fatalError(err)
 		}
-		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", args[0]), "success")
+		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", recipe), "success")
 	},
 }
 
 func init() {
 	recipeCmd.AddCommand(rmRecipeCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// rmRecipeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// rmRecipeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
