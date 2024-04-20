@@ -5,8 +5,9 @@ import (
 	"path/filepath"
 )
 
-const DefaultUrlFormat string = "https://hashicorp.zendesk.com/agent/tickets/@"
+const DefaultUrlFormat string = "http:example.com/@"
 
+// TODO: Change prior to releasing
 var DefaultHomeDirectory string = filepath.Join(os.Getenv("HOME"), "dev/sandbox-go/tck/test")
 
 const DefaultRecipeJson = `{
@@ -14,7 +15,7 @@ const DefaultRecipeJson = `{
 		"scratch.sh",
 		"notes.md"
 	],
-	"filesToCopy": []
+	"filesToCopy": ["*"]
 }`
 
 const StarMdFileContent = `

@@ -24,8 +24,6 @@ var initRecipeCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		// var recipeMap RecipeMapStruct
-
 		if len(args) != 1 {
 			fatalError(errors.New("exactly 1 recipe name argument is required"))
 		}
@@ -41,7 +39,7 @@ var initRecipeCmd = &cobra.Command{
 				fatalError(err)
 			}
 		} else {
-			// Overwrite flow
+
 		}
 	},
 }
