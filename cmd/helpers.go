@@ -53,7 +53,7 @@ func tckBanner() {
 	blue := "\033[1;34m%s\033[0m\n"
 	reset := "\033[0m"
 	fmt.Printf(blue, "=============================")
-	fmt.Printf(blue, fmt.Sprintf("%s This is Ticket Chef %s", emoji.ManCook.String(), emoji.ManCook.String()))
+	fmt.Printf(blue, fmt.Sprintf("%s This is Ticket Cook %s", emoji.ManCook.String(), emoji.ManCook.String()))
 	fmt.Printf(blue, "=============================")
 	fmt.Print(reset)
 }
