@@ -1,7 +1,14 @@
 
 # recipe ls, get, rm, create
     tck recipe create [name] 
-        creates directory and default recipe.json file with text file created and glob copy 
+        creates directory and starter recipe.json file with text file created and glob copy 
+            // Check if directory exists
+            // If not, create It
+                // create recipe.json
+                // create starter files:
+                // start.md - documentation on how to write recipes
+            // If does, option to overwrite
+    
     tck recipe ls 
         lists all recipes
     tck recipe get --all
