@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -25,12 +26,12 @@ var closeCmd = &cobra.Command{
 		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 			fatalError(err)
 		}
-		ticketDirectoryPath := ticket.getPath(homeInfo.getTicketsPath())
+		ticketDirectoryPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
 		if err := fileOrDirectoryExists(ticketDirectoryPath); err != nil {
 			fatalError(err)
 		} else {
-			err := os.Rename(ticketDirectoryPath, ticket.getPath(homeInfo.getClosedPath()))
+			err := os.Rename(ticketDirectoryPath, filepath.Join(homeInfo.getClosedPath(), ticket.TicketId))
 			if err != nil {
 				fmt.Println("Error:", err)
 				return

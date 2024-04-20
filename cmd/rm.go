@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -25,7 +26,7 @@ var rmCmd = &cobra.Command{
 		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 			fatalError(err)
 		}
-		ticketPath := ticket.getPath(homeInfo.getTicketsPath())
+		ticketPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
 		if err := fileOrDirectoryExists(ticketPath); err == nil {
 			removePrompt := fmt.Sprintf("Remove directory? %s?\nY to remove\nN to cancel", ticketPath)
@@ -33,7 +34,7 @@ var rmCmd = &cobra.Command{
 				fatalError(err)
 			}
 		}
-		if err := removeDirectory(ticket.getPath(homeInfo.getTicketsPath())); err != nil {
+		if err := removeDirectory(filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)); err != nil {
 			fatalError(err)
 		}
 		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", ticket.TicketId), "success")

@@ -37,7 +37,7 @@ var getCmd = &cobra.Command{
 			if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 				fatalError(err)
 			}
-			ticketPath := ticket.getPath(rootPath)
+			ticketPath := filepath.Join(rootPath, ticket.TicketId)
 
 			if err := fileOrDirectoryExists(ticketPath); err == nil {
 				if err := openDirectory(ticketPath, envVars["TCK_EDITOR"]); err != nil {

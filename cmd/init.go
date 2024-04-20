@@ -16,12 +16,14 @@ var initCmd = &cobra.Command{
 	Short: "Initialize a new ticket directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
+
 		recipeFlag := cmd.Flag("recipe").Value.String()
 		descriptionFlag := cmd.Flag("description").Value.String()
 		urlFormatFlag := cmd.Flag("url-format").Value.String()
 
 		recipe := setConfigValue(recipeFlag, envVars["TCK_RECIPE"], "default")
 		urlFormat := setConfigValue(urlFormatFlag, envVars["TCK_URL_FORMAT"], DefaultUrlFormat)
+
 		if err := urlFormatValidator(urlFormat); err != nil {
 			fatalError(err)
 		}
@@ -31,17 +33,16 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		var newTicket TicketStruct
-		if err := newTicket.setTicketId(args, envVars["TCK_ID"]); err != nil {
-			fatalError(err)
-		}
-
 		recipeMap, err := configureRecipe(homeInfo.getRecipesPath(), recipe)
 		if err != nil {
 			fatalError(err)
 		}
 
-		ticketPath := newTicket.getPath(homeInfo.getTicketsPath())
+		var ticket TicketStruct
+		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+			fatalError(err)
+		}
+		ticketPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
 		if err := fileOrDirectoryExists(ticketPath); err == nil {
 			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", ticketPath)
@@ -49,11 +50,12 @@ var initCmd = &cobra.Command{
 				fatalError(err)
 			}
 		}
+
 		if err := createDirectory(ticketPath); err != nil {
 			fatalError(err)
 		}
 
-		if err := createMetaJson(ticketPath, descriptionFlag, urlFormat, newTicket.TicketId); err != nil {
+		if err := createMetaJson(ticketPath, descriptionFlag, urlFormat, ticket.TicketId); err != nil {
 			fatalError(err)
 		}
 
@@ -65,7 +67,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		log(fmt.Sprintf("Ticket directory initialized: %s/", newTicket.TicketId), "success")
+		log(fmt.Sprintf("Ticket directory initialized: %s/", ticket.TicketId), "success")
 	},
 }
 
