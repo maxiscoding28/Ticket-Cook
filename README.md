@@ -1,1 +1,1 @@
-![Chef's kiss](chefs-kiss.gif)
+![Chef'kiss emoji logo](logo.gif)
