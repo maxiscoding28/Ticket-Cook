@@ -23,7 +23,7 @@ func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct) error {
 	return nil
 }
 
-func (ts *TicketStruct) getPath(ticketsPath string) string {
+func (ts TicketStruct) getPath(ticketsPath string) string {
 	return ticketsPath + "/" + ts.TicketId
 }
 

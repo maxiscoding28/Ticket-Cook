@@ -16,12 +16,12 @@ var initCmd = &cobra.Command{
 	Short: "Initialize a new ticket directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
-		recipeArg := cmd.Flag("recipe").Value.String()
-		description := cmd.Flag("description").Value.String()
-		urlFormatArg := cmd.Flag("url-format").Value.String()
+		recipeFlag := cmd.Flag("recipe").Value.String()
+		descriptionFlag := cmd.Flag("description").Value.String()
+		urlFormatFlag := cmd.Flag("url-format").Value.String()
 
-		recipe := setConfigValue(recipeArg, envVars["TCK_RECIPE"], "default")
-		urlFormat := setConfigValue(urlFormatArg, envVars["TCK_URL_FORMAT"], DefaultUrlFormat)
+		recipe := setConfigValue(recipeFlag, envVars["TCK_RECIPE"], "default")
+		urlFormat := setConfigValue(urlFormatFlag, envVars["TCK_URL_FORMAT"], DefaultUrlFormat)
 		if err := urlFormatValidator(urlFormat); err != nil {
 			fatalError(err)
 		}
@@ -53,7 +53,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		if err := createMetaJson(ticketPath, description, urlFormat, newTicket.TicketId); err != nil {
+		if err := createMetaJson(ticketPath, descriptionFlag, urlFormat, newTicket.TicketId); err != nil {
 			fatalError(err)
 		}
 
