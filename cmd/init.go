@@ -21,7 +21,7 @@ var initCmd = &cobra.Command{
 		urlFormatArg := cmd.Flag("url-format").Value.String()
 
 		recipe := setConfigValue(recipeArg, envVars["TCK_RECIPE"], "default")
-		urlFormat := setConfigValue(urlFormatArg, envVars["TCK_URL_FORMAT"], "https://hashicorp.zendesk.com/agent/tickets/@")
+		urlFormat := setConfigValue(urlFormatArg, envVars["TCK_URL_FORMAT"], DefaultUrlFormat)
 		if err := urlFormatValidator(urlFormat); err != nil {
 			fatalError(err)
 		}

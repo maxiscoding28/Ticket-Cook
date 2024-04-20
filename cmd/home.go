@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 
 	"github.com/enescakir/emoji"
 )
@@ -17,8 +15,7 @@ func (hi *HomeInfoStruct) determineHomeDirectory(envVar envVarStruct) {
 		hi.HomePath = envVar.value
 	} else {
 
-		// CHANGE THIS AFTER TESTING
-		hi.HomePath = filepath.Join(os.Getenv("HOME"), "dev/sandbox-go/tck/test")
+		hi.HomePath = DefaultHomeDirectory
 		log("No `TCK_HOME_DIR` environment variable was set", "warn")
 		log("The global default will be used: `$HOME/tck`", "warn")
 	}
