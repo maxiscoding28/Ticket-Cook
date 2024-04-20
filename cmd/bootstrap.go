@@ -25,7 +25,6 @@ func bootstrapDirectories(homeInfo HomeInfoStruct) error {
 	return nil
 }
 
-// bootstrapCmd represents the bootstrap command
 var bootstrapCmd = &cobra.Command{
 	Use:   "bootstrap",
 	Short: "Boostrap the tck home directory",
@@ -35,12 +34,9 @@ var bootstrapCmd = &cobra.Command{
 		if err != nil {
 			fatalError(err)
 		}
-
 		if err := fileOrDirectoryExists(homeInfo.HomePath); err != nil {
-
 			if fileOrDirectoryDoesNotExist(err) {
 				bootstrapDirectories(*homeInfo)
-
 			} else {
 				fatalError(err)
 			}
@@ -49,6 +45,7 @@ var bootstrapCmd = &cobra.Command{
 			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", homeInfo.HomePath)
 
 			log(message, "error")
+
 			if err := confirmDirectoryRemove(overWritePrompt, "cancelled", homeInfo.HomePath); err != nil {
 				fatalError(err)
 			} else {

@@ -66,7 +66,6 @@ var initCmd = &cobra.Command{
 		}
 
 		log(fmt.Sprintf("Ticket directory initialized: %s/", newTicket.TicketId), "success")
-
 	},
 }
 

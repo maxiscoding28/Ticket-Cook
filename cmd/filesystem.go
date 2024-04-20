@@ -46,36 +46,30 @@ func readDirectory(path string) ([]fs.DirEntry, error) {
 		return nil, err
 	}
 	defer dir.Close()
-
 	files, err := dir.ReadDir(0)
 	if err != nil {
 		return nil, err
 	}
-
 	return files, nil
 }
 
 func readFile(path string) ([]byte, error) {
 	content, err := os.ReadFile(path)
-
 	return content, err
 }
 
 func createListOfFiles(filesToCreate []string, ticketDirectoryPath string) error {
 	for _, filename := range filesToCreate {
 		filePath := filepath.Join(ticketDirectoryPath, filename)
-
 		_, err := os.Create(filePath)
 		if err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
 func copyListOfFiles(filesToCopy []string, recipeDirectoryPath string, ticketDirectoryPath string) error {
-	// REFACTOR
 	if len(filesToCopy) > 0 {
 		if err := fileOrDirectoryExists(recipeDirectoryPath); err != nil {
 			return err
@@ -174,6 +168,7 @@ func openDirectory(directoryPath string, envVar envVarStruct) error {
 	}
 
 	rootCommand := command[0]
+
 	if len(command) > 1 {
 		args := command[1:]
 		args = append(args, directoryPath)

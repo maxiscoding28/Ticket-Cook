@@ -20,11 +20,11 @@ var closeCmd = &cobra.Command{
 		if err != nil {
 			fatalError(err)
 		}
+
 		var ticket TicketStruct
 		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
 			fatalError(err)
 		}
-
 		ticketDirectoryPath := ticket.getPath(homeInfo.getTicketsPath())
 
 		if err := fileOrDirectoryExists(ticketDirectoryPath); err != nil {

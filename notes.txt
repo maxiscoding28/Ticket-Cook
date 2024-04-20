@@ -1,7 +1,13 @@
 
-# recipe ls, get, rm, edit. create
-    tck recipe get --all open recipes directory
-    tck recipe create [name] creates directory and default recipe.json file
+# recipe ls, get, rm, create
+    tck recipe create [name] 
+        creates directory and default recipe.json file with text file created and glob copy 
+    tck recipe ls 
+        lists all recipes
+    tck recipe get --all
+         open recipes directory
+    tck recipe rm [name] 
+        removes recipe. Confirm operation
 
 Make more templates - add repo
     - Vault dev
@@ -10,7 +16,11 @@ Make more templates - add repo
     - Hvac
     - Vault agent
 
+
+
 Readme/Docs
+
+# Walkthrough
 Install
 Bootstrap
 Initialize a Ticket directory
@@ -42,6 +52,7 @@ Autocompletion
 
 Docs
 
+0.2
 DO NOT backup tickets to Github
 Backup to s3
 Backup templates to Github or S3

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 const DefaultRecipeJson = `{
@@ -106,4 +108,17 @@ func recipeIsValid(pathToRecipe string) (*RecipeMapStruct, error) {
 	}
 
 	return &data, nil
+}
+
+var recipeCmd = &cobra.Command{
+	Use:   "recipe",
+	Short: "Manage recipe directories",
+	Args:  cobra.MaximumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(recipeCmd)
 }
