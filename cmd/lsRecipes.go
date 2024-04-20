@@ -4,8 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +12,14 @@ var lsRecipesCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "List all recipes in the recipe/ directory",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("lsRecipes called")
+		envVars := getEnvVars()
+
+		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		if err != nil {
+			fatalError(err)
+		}
+
+		renderRecipes(homeInfo.getRecipesPath())
 	},
 }
 

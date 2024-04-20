@@ -1,20 +1,7 @@
 
-# recipe ls, get, rm, create
-    tck recipe create [name] 
-        creates directory and starter recipe.json file with text file created and glob copy 
-            // Check if directory exists
-            // If not, create It
-                // create recipe.json
-                // create starter files:
-                // start.md - documentation on how to write recipes
-            // If does, option to overwrite
-    
-    tck recipe ls 
-        lists all recipes
-    tck recipe get --all
-         open recipes directory
-    tck recipe rm [name] 
-        removes recipe. Confirm operation
+
+tck recipe get --all
+    open recipes directory
 
 Make more templates - add repo
     - vault dev
@@ -54,6 +41,9 @@ Remove a ticket
 Close a ticket
 / list/get/rm closed tickets
 Re-open a ticket
+
+Environment Variables
+"TCK_ID", "TCK_RECIPE", "TCK_HOME_DIR", "TCK_EDITOR", "TCK_URL_FORMAT"
 
 0.1
 

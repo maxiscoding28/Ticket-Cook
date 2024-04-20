@@ -89,8 +89,6 @@ func confirmDirectoryRemove(promptMessage string, verb string, directory string)
 func createTable() table.Writer {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Ticket ID", "Description", "Url"})
-
 	return t
 }
 
@@ -116,4 +114,27 @@ func setConfigValue(arg string, envVar envVarStruct, globalDefault string) strin
 	} else {
 		return globalDefault
 	}
+}
+
+func renderTickets(path string) {
+	files, err := readDirectory(path)
+	if err != nil {
+		fatalError(err)
+	}
+
+	t := createTable()
+	appendTicketsToTable(files, t, path)
+	t.SetStyle(table.StyleLight)
+	t.Render()
+}
+
+func renderRecipes(path string) {
+	files, err := readDirectory(path)
+	if err != nil {
+		fatalError(err)
+	}
+	t := createTable()
+	appendRecipesToTable(files, t, path)
+	t.SetStyle(table.StyleLight)
+	t.Render()
 }

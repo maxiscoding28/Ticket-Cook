@@ -11,12 +11,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// initRecipeCmd represents the initRecipe command
+func initializeTemplate(recipePath string) {
+	if err := createDirectory(recipePath); err != nil {
+		fatalError(err)
+	}
+	if err := createFileWithContent(getRecipeJsonFilePath(recipePath), DefaultRecipeJson); err != nil {
+		fatalError(err)
+	}
+	if err := createFileWithContent(filepath.Join(recipePath, "start.md"), StarMdFileContent); err != nil {
+		fatalError(err)
+	}
+	log(fmt.Sprintf("Recipe directory initialized: %s/", filepath.Base(recipePath)), "success")
+}
+
 var initRecipeCmd = &cobra.Command{
 	Use:   "init [recipe]",
 	Short: "Initialize a new recipe directory",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("initRecipe called")
 		envVars := getEnvVars()
 
 		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
@@ -32,14 +43,16 @@ var initRecipeCmd = &cobra.Command{
 
 		if err := fileOrDirectoryExists(recipePath); err != nil {
 			if isFileNotFoundError(err) {
-				// Create recipe
-				// Create starter files
-				// start.md - documentation on how to write recipes
+				initializeTemplate(recipePath)
 			} else {
 				fatalError(err)
 			}
 		} else {
-
+			removePrompt := fmt.Sprintf("Remov existing recipe? %s?\nY to remove\nN to cancel", recipePath)
+			if err := confirmDirectoryRemove(removePrompt, "removed", recipePath); err != nil {
+				fatalError(err)
+			}
+			initializeTemplate(recipePath)
 		}
 	},
 }

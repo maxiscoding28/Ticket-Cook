@@ -43,7 +43,6 @@ var bootstrapCmd = &cobra.Command{
 		} else {
 			message := fmt.Sprintf("%s This action will permanently remove your existing home directory. Are you sure you'd like to proceed?", emoji.Skull)
 			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", homeInfo.HomePath)
-
 			log(message, "error")
 
 			if err := confirmDirectoryRemove(overWritePrompt, "cancelled", homeInfo.HomePath); err != nil {

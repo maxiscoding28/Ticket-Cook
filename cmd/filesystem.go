@@ -184,10 +184,12 @@ func openDirectory(directoryPath string, envVar envVarStruct) error {
 	return nil
 }
 
-func appendFilesToTable(files []fs.DirEntry, table table.Writer, homePath string) {
+func appendTicketsToTable(files []fs.DirEntry, t table.Writer, path string) {
+	t.AppendHeader(table.Row{"Ticket ID", "Description", "Url"})
+
 	for _, file := range files {
 		if file.IsDir() {
-			metaDataJson, err := readFile(filepath.Join(homePath, file.Name(), "meta.json"))
+			metaDataJson, err := readFile(filepath.Join(path, file.Name(), "meta.json"))
 			if err != nil {
 				log(fmt.Sprintf("error reading meta.json in %s: %v\n", file.Name(), err.Error()), "error")
 				continue
@@ -201,8 +203,21 @@ func appendFilesToTable(files []fs.DirEntry, table table.Writer, homePath string
 
 			description := metaDataMap["description"]
 			urlFormat := metaDataMap["url"]
-			table.AppendRow([]interface{}{file.Name(), description, urlFormat})
-			table.AppendSeparator()
+			t.AppendRow([]interface{}{file.Name(), description, urlFormat})
+			t.AppendSeparator()
+		}
+	}
+}
+func appendRecipesToTable(files []fs.DirEntry, t table.Writer, path string) {
+	t.AppendHeader(table.Row{"Recipes"})
+	for i, file := range files {
+		if files[i].IsDir() {
+			if err := fileOrDirectoryExists(filepath.Join(path, files[i].Name(), "recipe.json")); err != nil {
+				log(fmt.Sprintf("error reading recipe.json in %s: %v\n", file.Name(), err.Error()), "error")
+				continue
+			} else {
+				t.AppendRow([]interface{}{file.Name()})
+			}
 		}
 	}
 }
