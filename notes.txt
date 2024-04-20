@@ -1,0 +1,62 @@
+
+# Close, reopen commands
+
+# Add closed flags
+
+// get, list, rm
+# Closed tickets directory
+    tck close [ticket id]
+    .closed/
+    tck ls --closed
+    tck get --closed
+    tck get --closed --all 
+    tck rm --closed
+    tcmd reopen [ticket id]
+
+
+# recipe ls, get, rm, edit. create
+    tck recipe get --all open recipes directory
+    tck recipe create [name] creates directory and default recipe.json file
+
+Make more templates - add repo
+    - Vault dev
+    - Vault docker
+    - Vault Terraform Provider
+    - Hvac
+    - Vault agent
+
+Readme/Docs
+Install
+Bootstrap
+Initialize a Ticket directory
+    - Description
+Get It
+    - Nav option
+List tickets
+    - Url-format
+Templates
+    - Initialize with template
+    - Template syntax
+        - FilesToCreatetc
+        - FilesToCopy
+Remove a ticket
+Close a ticket
+/ list/get/rm closed tickets
+Re-open a ticket
+
+0.1
+
+Refactor copy
+
+# comma separated recipecs
+tck init [ticket] -r=sev,auth
+tck add-recipe ticket-id --recipe=sys,vault-dev
+    // Optionally overwrite files that already exist
+
+Autocompletion
+
+Docs
+
+DO NOT backup tickets to Github
+Backup to s3
+Backup templates to Github or S3
