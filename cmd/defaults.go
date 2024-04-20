@@ -8,7 +8,7 @@ import (
 const DefaultUrlFormat string = "http:example.com/@"
 
 // TODO: Change prior to releasing
-var DefaultHomeDirectory string = filepath.Join(os.Getenv("HOME"), "dev/sandbox-go/tck/test")
+var DefaultHomeDirectory string = filepath.Join(os.Getenv("HOME"), "tck")
 
 const DefaultRecipeJson = `{
 	"filesToCreate": [
