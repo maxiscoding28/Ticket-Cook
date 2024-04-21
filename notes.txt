@@ -1,22 +1,6 @@
-Make more templates - add repo
-    - vault dev
-        - Shell scripts with vault server -dev commands
-    - vault docker
-        - docker run commands in shell
-        - docker-compose file
-        - docker-compose agent file
-    - vault terraform provider
-        - main.tf
-    - Hvac
-        - python project
-    - SEV
-        - sev notes and scripts
-        - call-notes.txt
-    - Sentinel
-        - sentinel stuff
-
-
 Readme/Docs
+
+Rm closed ticket
 
 # Walkthrough
 Install

@@ -62,5 +62,4 @@ var initRecipeCmd = &cobra.Command{
 
 func init() {
 	recipeCmd.AddCommand(initRecipeCmd)
-	// Prevent creating a default recipe
 }
