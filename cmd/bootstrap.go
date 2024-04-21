@@ -22,6 +22,7 @@ func bootstrapDirectories(homeInfo HomeInfoStruct) error {
 		}
 	}
 
+	tckBanner()
 	return nil
 }
 
@@ -30,7 +31,7 @@ func overWriteExistingHomeDirectory(homeInfo HomeInfoStruct) error {
 	overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", homeInfo.HomePath)
 	log(message, "error")
 
-	if err := confirmDirectoryRemove(overWritePrompt, "cancelled", homeInfo.HomePath); err != nil {
+	if err := confirmDirectoryRemove(overWritePrompt, "removed", homeInfo.HomePath); err != nil {
 		return err
 	} else {
 		if err := bootstrapDirectories(homeInfo); err != nil {
@@ -46,7 +47,7 @@ var bootstrapCmd = &cobra.Command{
 	Short: "Boostrap the tck home directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
-		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], true)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"])
 		if err != nil {
 			fatalError(err)
 		}

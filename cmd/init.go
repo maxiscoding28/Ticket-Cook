@@ -28,7 +28,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"])
 		if err != nil {
 			fatalError(err)
 		}

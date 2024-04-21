@@ -17,7 +17,7 @@ var reopenCmd = &cobra.Command{
 	Short: "Move ticket out of the .closed/ directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
-		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"])
 		if err != nil {
 			fatalError(err)
 		}

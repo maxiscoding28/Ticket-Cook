@@ -76,7 +76,7 @@ func confirmDirectoryRemove(promptMessage string, verb string, directory string)
 	switch userInput {
 	case "Y":
 		removeDirectory(directory)
-		log(fmt.Sprintf("Diretory %s: %s", verb, directory), "info")
+		log(fmt.Sprintf("Directory %s: %s", verb, directory), "info")
 	case "N":
 		return errors.New("operation cancelled")
 	default:

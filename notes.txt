@@ -1,5 +1,3 @@
-getPath should just be filepath.Join
-
 Make more templates - add repo
     - vault dev
         - Shell scripts with vault server -dev commands

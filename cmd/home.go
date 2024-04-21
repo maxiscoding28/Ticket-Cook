@@ -31,17 +31,13 @@ func (hi HomeInfoStruct) getClosedPath() string {
 	return hi.HomePath + "/.closed"
 }
 
-func getHomeDirectory(envVar envVarStruct, bootstrap bool) (*HomeInfoStruct, error) {
+func getHomeDirectory(envVar envVarStruct) (*HomeInfoStruct, error) {
 	var homeInfo HomeInfoStruct
 	homeInfo.determineHomeDirectory(envVar)
 	if err := fileOrDirectoryExists(homeInfo.HomePath); err != nil {
 		if isFileNotFoundError(err) {
-			if bootstrap {
-				tckBanner()
-			} else {
-				message := fmt.Sprintf("%s Run `tck bootstrap` to set up a new tck home directory", emoji.HikingBoot)
-				log(message, "info")
-			}
+			message := fmt.Sprintf("%s Run `tck bootstrap` to set up a new tck home directory", emoji.HikingBoot)
+			log(message, "info")
 		} else {
 			return nil, err
 		}

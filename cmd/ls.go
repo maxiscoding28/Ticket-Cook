@@ -14,7 +14,7 @@ var lsCmd = &cobra.Command{
 		envVars := getEnvVars()
 		closed, _ := cmd.Flags().GetBool("closed")
 
-		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"])
 		if err != nil {
 			fatalError(err)
 		}

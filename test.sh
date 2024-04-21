@@ -4,6 +4,8 @@
 export TCK_HOME_DIR="/Users/maxwinslow/dev/sandbox-go/tck/test"
 rm -rf $TCK_HOME_DIR
 tck bootstrap
+
+## overwrite bootstrap
 tck bootstrap
 tck recipe init test
 

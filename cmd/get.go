@@ -47,7 +47,7 @@ var getCmd = &cobra.Command{
 		nav, _ := cmd.Flags().GetBool("nav")
 		all, _ := cmd.Flags().GetBool("all")
 
-		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"])
 		if err != nil {
 			fatalError(err)
 		}
