@@ -19,7 +19,7 @@ var rmRecipeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
@@ -40,11 +40,9 @@ var rmRecipeCmd = &cobra.Command{
 			if err := confirmDirectoryRemove(removePrompt, "removed", recipePath); err != nil {
 				fatalError(err)
 			}
-		}
-		if err := removeDirectory(recipePath); err != nil {
+		} else {
 			fatalError(err)
 		}
-		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", recipe), "success")
 	},
 }
 

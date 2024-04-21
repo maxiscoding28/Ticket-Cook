@@ -14,7 +14,7 @@ var lsRecipesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}

@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func globCopy(files []string) bool {
+func isGlobCopy(files []string) bool {
 	return len(files) == 1 && files[0] == "*"
 }
 

@@ -19,7 +19,7 @@ var getRecipeCmd = &cobra.Command{
 		envVars := getEnvVars()
 		all, _ := cmd.Flags().GetBool("all")
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}

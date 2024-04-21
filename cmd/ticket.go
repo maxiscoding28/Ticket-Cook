@@ -5,10 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"path/filepath"
 	"strings"
 )
 
-func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct) error {
+func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct, homeTicketsPath string) (string, error) {
 	if len(args) == 1 {
 		ts.TicketId = args[0]
 	} else if envVar.exists {
@@ -16,9 +17,9 @@ func (ts *TicketStruct) setTicketId(args []string, envVar envVarStruct) error {
 		message := fmt.Sprintf("The TCK_ID variable is set. Using value: %s", ts.TicketId)
 		log(message, "info")
 	} else {
-		return errors.New("no ticket id set")
+		return "", errors.New("no ticket id set")
 	}
-	return nil
+	return filepath.Join(homeTicketsPath, ts.TicketId), nil
 }
 
 // func (ts TicketStruct) getPath(ticketsPath string) string {

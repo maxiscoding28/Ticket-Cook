@@ -31,7 +31,7 @@ func (hi HomeInfoStruct) getClosedPath() string {
 	return hi.HomePath + "/.closed"
 }
 
-func setHomeDirectory(envVar envVarStruct, bootstrap bool) (*HomeInfoStruct, error) {
+func getHomeDirectory(envVar envVarStruct, bootstrap bool) (*HomeInfoStruct, error) {
 	var homeInfo HomeInfoStruct
 	homeInfo.determineHomeDirectory(envVar)
 	if err := fileOrDirectoryExists(homeInfo.HomePath); err != nil {

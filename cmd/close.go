@@ -17,16 +17,16 @@ var closeCmd = &cobra.Command{
 	Short: "Move ticket to the .closed/ directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
 
 		var ticket TicketStruct
-		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+		ticketDirectoryPath, err := ticket.setTicketId(args, envVars["TCK_ID"], homeInfo.getTicketsPath())
+		if err != nil {
 			fatalError(err)
 		}
-		ticketDirectoryPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
 		if err := fileOrDirectoryExists(ticketDirectoryPath); err != nil {
 			fatalError(err)

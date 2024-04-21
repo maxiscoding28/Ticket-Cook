@@ -10,6 +10,34 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func handleOpen(directoryPath string, envVar envVarStruct, nav bool) error {
+
+	if err := fileOrDirectoryExists(directoryPath); err == nil {
+		if err := openDirectory(directoryPath, envVar); err != nil {
+			return err
+		}
+		log(fmt.Sprintf("Ticket directory opened: %s", directoryPath), "success")
+		if nav {
+			content, err := readFile(filepath.Join(directoryPath, "meta.json"))
+			if err != nil {
+				return err
+			}
+			meta, err := unMarshallMetadata(content)
+			if err != nil {
+				return err
+			}
+			log(fmt.Sprintf("The `-nav` flag was set. Opening url: %s", meta["url"]), "info")
+
+			if err := openUrl(meta["url"]); err != nil {
+				return err
+			}
+		}
+	} else {
+		return err
+	}
+	return nil
+}
+
 var getCmd = &cobra.Command{
 	Use:   "get [ticket]",
 	Short: "Open the given ticket in the ticket/ directory",
@@ -19,7 +47,7 @@ var getCmd = &cobra.Command{
 		nav, _ := cmd.Flags().GetBool("nav")
 		all, _ := cmd.Flags().GetBool("all")
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
@@ -34,35 +62,14 @@ var getCmd = &cobra.Command{
 			openDirectory(rootPath, envVars["TCK_EDITOR"])
 		} else {
 			var ticket TicketStruct
-			if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
-				fatalError(err)
-			}
-			ticketPath := filepath.Join(rootPath, ticket.TicketId)
-
-			if err := fileOrDirectoryExists(ticketPath); err == nil {
-				if err := openDirectory(ticketPath, envVars["TCK_EDITOR"]); err != nil {
-					fatalError(err)
-				}
-				log(fmt.Sprintf("Ticket directory opened: %s", ticket.TicketId), "success")
-				if nav {
-					content, err := readFile(filepath.Join(ticketPath, "meta.json"))
-					if err != nil {
-						fatalError(err)
-					}
-					meta, err := unMarshallMetadata(content)
-					if err != nil {
-						fatalError(err)
-					}
-					log(fmt.Sprintf("The `-nav` flag was set. Opening url: %s", meta["url"]), "info")
-
-					if err := openUrl(meta["url"]); err != nil {
-						fatalError(err)
-					}
-				}
-			} else {
+			directoryPath, err := ticket.setTicketId(args, envVars["TCK_ID"], rootPath)
+			if err != nil {
 				fatalError(err)
 			}
 
+			if err := handleOpen(directoryPath, envVars["TCK_EDITOR"], nav); err != nil {
+				fatalError(err)
+			}
 		}
 	},
 }

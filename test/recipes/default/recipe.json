@@ -3,5 +3,5 @@
 		"scratch.sh",
 		"notes.md"
 	],
-	"filesToCopy": []
+	"filesToCopy": ["*"]
 }

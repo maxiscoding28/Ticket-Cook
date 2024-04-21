@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -17,28 +16,25 @@ var rmCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		envVars := getEnvVars()
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
 
 		var ticket TicketStruct
-		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+		ticketDirectoryPath, err := ticket.setTicketId(args, envVars["TCK_ID"], homeInfo.getTicketsPath())
+		if err != nil {
 			fatalError(err)
 		}
-		ticketPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
-		if err := fileOrDirectoryExists(ticketPath); err == nil {
-			removePrompt := fmt.Sprintf("Remove directory? %s?\nY to remove\nN to cancel", ticketPath)
-			if err := confirmDirectoryRemove(removePrompt, "removed", ticketPath); err != nil {
+		if err := fileOrDirectoryExists(ticketDirectoryPath); err == nil {
+			removePrompt := fmt.Sprintf("Remove directory? %s?\nY to remove\nN to cancel", ticketDirectoryPath)
+			if err := confirmDirectoryRemove(removePrompt, "removed", ticketDirectoryPath); err != nil {
 				fatalError(err)
 			}
-		}
-		if err := removeDirectory(filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)); err != nil {
+		} else {
 			fatalError(err)
 		}
-		log(fmt.Sprintf("Ticket directory removed (if it existed): %s", ticket.TicketId), "success")
-
 	},
 }
 

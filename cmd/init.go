@@ -28,7 +28,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		homeInfo, err := setHomeDirectory(envVars["TCK_HOME_DIR"], false)
+		homeInfo, err := getHomeDirectory(envVars["TCK_HOME_DIR"], false)
 		if err != nil {
 			fatalError(err)
 		}
@@ -39,35 +39,35 @@ var initCmd = &cobra.Command{
 		}
 
 		var ticket TicketStruct
-		if err := ticket.setTicketId(args, envVars["TCK_ID"]); err != nil {
+		ticketDirectoryPath, err := ticket.setTicketId(args, envVars["TCK_ID"], homeInfo.getTicketsPath())
+		if err != nil {
 			fatalError(err)
 		}
-		ticketPath := filepath.Join(homeInfo.getTicketsPath(), ticket.TicketId)
 
-		if err := fileOrDirectoryExists(ticketPath); err == nil {
-			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", ticketPath)
-			if err := confirmDirectoryRemove(overWritePrompt, "cancelled", ticketPath); err != nil {
+		if err := fileOrDirectoryExists(ticketDirectoryPath); err == nil {
+			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", ticketDirectoryPath)
+			if err := confirmDirectoryRemove(overWritePrompt, "cancelled", ticketDirectoryPath); err != nil {
 				fatalError(err)
 			}
 		}
 
-		if err := createDirectory(ticketPath); err != nil {
+		if err := createDirectory(ticketDirectoryPath); err != nil {
 			fatalError(err)
 		}
 
-		if err := createMetaJson(ticketPath, descriptionFlag, urlFormat, ticket.TicketId); err != nil {
+		if err := createMetaJson(ticketDirectoryPath, descriptionFlag, urlFormat, ticket.TicketId); err != nil {
 			fatalError(err)
 		}
 
-		if err := createListOfFiles(recipeMap.FilesToCreate, ticketPath); err != nil {
+		if err := createListOfFiles(recipeMap.FilesToCreate, ticketDirectoryPath); err != nil {
 			fatalError(err)
 		}
 
-		if err := copyListOfFiles(recipeMap.FilesToCopy, filepath.Join(homeInfo.getRecipesPath(), recipe), ticketPath); err != nil {
+		if err := copyListOfFiles(recipeMap.FilesToCopy, filepath.Join(homeInfo.getRecipesPath(), recipe), ticketDirectoryPath); err != nil {
 			fatalError(err)
 		}
 
-		log(fmt.Sprintf("Ticket directory initialized: %s/", ticket.TicketId), "success")
+		log(fmt.Sprintf("Ticket directory initialized: %s/", ticketDirectoryPath), "success")
 	},
 }
 

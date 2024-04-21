@@ -69,6 +69,44 @@ func createListOfFiles(filesToCreate []string, ticketDirectoryPath string) error
 	return nil
 }
 
+func globCopy(recipeDirectoryPath string, ticketDirectoryPath string) error {
+	files, err := readDirectory(recipeDirectoryPath)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		if file.Name() == "recipe.json" {
+			continue
+		}
+		if file.IsDir() {
+			log(fmt.Sprintf("Can't copy directories: %s/", file.Name()), "error")
+			continue
+		}
+
+		srcFile, err := os.Open(filepath.Join(recipeDirectoryPath, file.Name()))
+
+		if err != nil {
+			return err
+		}
+		defer srcFile.Close()
+
+		destFile, err := os.Create(filepath.Join(ticketDirectoryPath, file.Name()))
+		if err != nil {
+			return err
+		}
+		defer destFile.Close()
+
+		_, err = io.Copy(destFile, srcFile)
+		if err != nil {
+			return err
+		}
+		log(fmt.Sprintf("Copy successful - %s", file.Name()), "success")
+	}
+
+	return nil
+}
+
 func copyListOfFiles(filesToCopy []string, recipeDirectoryPath string, ticketDirectoryPath string) error {
 	if len(filesToCopy) > 0 {
 		if err := fileOrDirectoryExists(recipeDirectoryPath); err != nil {
@@ -77,40 +115,9 @@ func copyListOfFiles(filesToCopy []string, recipeDirectoryPath string, ticketDir
 		var sourceFile string
 		var destinationFile string
 
-		if globCopy(filesToCopy) {
-			files, err := readDirectory(recipeDirectoryPath)
-			if err != nil {
+		if isGlobCopy(filesToCopy) {
+			if err := globCopy(recipeDirectoryPath, ticketDirectoryPath); err != nil {
 				return err
-			}
-
-			for _, file := range files {
-				if file.Name() == "recipe.json" {
-					continue
-				}
-				if file.IsDir() {
-					log(fmt.Sprintf("Can't copy directories: %s/", file.Name()), "error")
-					continue
-				}
-
-				srcFile, err := os.Open(filepath.Join(recipeDirectoryPath, file.Name()))
-
-				if err != nil {
-					return err
-				}
-				defer srcFile.Close()
-
-				destFile, err := os.Create(filepath.Join(ticketDirectoryPath, file.Name()))
-				if err != nil {
-					return err
-				}
-				defer destFile.Close()
-
-				_, err = io.Copy(destFile, srcFile)
-				if err != nil {
-					return err
-				}
-				log(fmt.Sprintf("Copy successful - %s", file.Name()), "success")
-
 			}
 
 		} else {
@@ -216,7 +223,8 @@ func appendRecipesToTable(files []fs.DirEntry, t table.Writer, path string) {
 				log(fmt.Sprintf("error reading recipe.json in %s: %v\n", file.Name(), err.Error()), "error")
 				continue
 			} else {
-				t.AppendRow([]interface{}{file.Name()})
+				data := fmt.Sprintf("- %s", file.Name())
+				t.AppendRow([]interface{}{data})
 			}
 		}
 	}
