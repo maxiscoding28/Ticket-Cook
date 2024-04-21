@@ -1,5 +1,6 @@
-# Ticket Cook (tck)
-<img src="logo.gif" width="250" height="250">
+<img src="logo.gif" width="125" height="125">
+
+# Ticket Cook (tck) 
 
 ### Installation
 
