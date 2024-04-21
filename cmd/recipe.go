@@ -8,10 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func isGlobCopy(files []string) bool {
-	return len(files) == 1 && files[0] == "*"
-}
-
 func handleDefaultTemplate(recipeDirectory string, recipeJsonFilePath string) error {
 	if err := fileOrDirectoryExists(recipeDirectory); err != nil {
 		if isFileNotFoundError(err) {

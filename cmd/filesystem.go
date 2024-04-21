@@ -70,45 +70,6 @@ func createListOfFiles(filesToCreate []string, ticketDirectoryPath string) error
 	return nil
 }
 
-func globCopy(recipeDirectoryPath string, ticketDirectoryPath string) error {
-	files, err := readDirectory(recipeDirectoryPath)
-	if err != nil {
-		return err
-	}
-	for _, file := range files {
-		fmt.Println(file)
-
-		if file.Name() == "recipe.json" {
-			continue
-		}
-		if file.IsDir() {
-			log(fmt.Sprintf("Can't copy directories: %s/", file.Name()), "error")
-			continue
-		}
-
-		srcFile, err := os.Open(filepath.Join(recipeDirectoryPath, file.Name()))
-
-		if err != nil {
-			return err
-		}
-		defer srcFile.Close()
-
-		destFile, err := os.Create(filepath.Join(ticketDirectoryPath, file.Name()))
-		if err != nil {
-			return err
-		}
-		defer destFile.Close()
-
-		_, err = io.Copy(destFile, srcFile)
-		if err != nil {
-			return err
-		}
-		log(fmt.Sprintf("Copy successful - %s", file.Name()), "success")
-	}
-
-	return nil
-}
-
 func noFilesInTemplateDirectory(files []fs.DirEntry) bool {
 	if len(files) == 1 && files[0].Name() == "recipe.json" {
 		return true
