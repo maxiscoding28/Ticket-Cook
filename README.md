@@ -1,15 +1,15 @@
 # Ticket Cook (tck)
-![Chef'kiss emoji logo](logo.gif)
+<img src="logo.gif" width="250" height="250">
 
-## Installation
+### Installation
 
-## Quick Start
+### Quick Start
 
-## Managing Tickets
+### Managing Tickets
 
-## Managing Recipes
+### Managing Recipes
 
-## Environment Variables
+### Environment Variables
 TCK_ID
     - tck init
     - tck get
@@ -26,7 +26,7 @@ TCK_EDITOR
 TCK_URL_FORMAT
     - tck init
 
-## Full List of Commands and Flags
+### Full List of Commands and Flags
 tck bootstrap
 
 tck init
