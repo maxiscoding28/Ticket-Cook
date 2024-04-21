@@ -10,21 +10,28 @@
 ### Managing Recipes
 
 ### Environment Variables
-TCK_ID
-    - tck init
-    - tck get
-    - tck close
-    - tck reopen
-    - tck remove
-TCK_RECIPE
-    - tck init
-TCK_HOME_DIR
-    - _all commands_
-TCK_EDITOR
-    - tck get
-    - tck recipe get
-TCK_URL_FORMAT
-    - tck init
+`TCK_ID`
+- **Description**: Defines the Ticket ID instead of manually specifying it as an argument to the CLI.
+- **Example Usage**: `TCK_ID=1234 tck get`
+- **Available for the following commands:**
+    - `tck init`
+    - `tck get`
+    - `tck close`
+    - `tck reopen`
+    - `tck remove`
+
+`TCK_RECIPE`
+- `tck init`
+
+`TCK_HOME_DIR`
+- **All commands**
+
+`TCK_EDITOR`
+- `tck get`
+- `tck recipe get`
+
+`TCK_URL_FORMAT`
+- `tck init`
 
 ### Full List of Commands and Flags
 tck bootstrap
