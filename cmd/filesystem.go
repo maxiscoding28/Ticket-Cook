@@ -10,6 +10,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/enescakir/emoji"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
@@ -221,10 +222,15 @@ func appendTicketsToTable(files []fs.DirEntry, t table.Writer, path string) {
 		}
 	}
 }
+
+func isHiddenDirectory(fileName string) bool {
+	return strings.HasPrefix(fileName, ".")
+}
+
 func appendRecipesToTable(files []fs.DirEntry, t table.Writer, path string) {
-	t.AppendHeader(table.Row{"Recipes"})
+	t.AppendHeader(table.Row{"Recipes " + emoji.Memo.String()})
 	for i, file := range files {
-		if files[i].IsDir() {
+		if files[i].IsDir() && !isHiddenDirectory(files[i].Name()) {
 			if err := fileOrDirectoryExists(filepath.Join(path, files[i].Name(), "recipe.json")); err != nil {
 				log(fmt.Sprintf("error reading recipe.json in %s: %v\n", file.Name(), err.Error()), "error")
 				continue
