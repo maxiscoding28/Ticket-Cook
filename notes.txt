@@ -1,50 +1,18 @@
-Readme/Docs
+- Remove recipe.json concept (for now)
 
-Rm closed ticket
-
-# Walkthrough
-Install
-Bootstrap
-Initialize a Ticket directory
-    - Description
-Get It
-    - Nav option
-List tickets
-    - Url-format
-Templates
-    - Initialize with template
-    - Template syntax
-        - FilesToCreatetc
-        - FilesToCopy
-Remove a ticket
-Close a ticket
-/ list/get/rm closed tickets
-Re-open a ticket
-
-Environment Variables
-"TCK_ID", "TCK_RECIPE", "TCK_HOME_DIR", "TCK_EDITOR", "TCK_URL_FORMAT"
+- Readme finished with Docs
 
 0.1
 
-Refactor copy
-// Allow one level of nesting not two
+Refactor Copy, for recursive copying
 
-# comma separated recipecs
-tck init [ticket] -r=sev,auth
-tck add-recipe ticket-id --recipe=sys,vault-dev
-    // Optionally overwrite files that already exist
+Comma separated recipes
 
 Autocompletion
 
-Docs
-
 0.2
-Backup tickets to file
-Backup tickets to s3
+Backup to file
+    - target any combination of tickets,recipes,.closed
 
-Backup recipes to github
-    // Recommend https://gitleaks.io/ action
-
-DO NOT backup tickets to Github
-Backup to s3
-Backup templates to Github or S3
+Scan for secrets (with trufflehog)
+    - target any combination of tickets,recipe,.closed
