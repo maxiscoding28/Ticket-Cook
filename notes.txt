@@ -43,6 +43,7 @@ Environment Variables
 0.1
 
 Refactor copy
+// Allow one level of nesting not two
 
 # comma separated recipecs
 tck init [ticket] -r=sev,auth
@@ -54,11 +55,12 @@ Autocompletion
 Docs
 
 0.2
-deep copy, copy directories
-
+Backup tickets to file
 Backup tickets to s3
+
 Backup recipes to github
     // Recommend https://gitleaks.io/ action
+
 DO NOT backup tickets to Github
 Backup to s3
 Backup templates to Github or S3

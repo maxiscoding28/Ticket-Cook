@@ -74,8 +74,9 @@ func globCopy(recipeDirectoryPath string, ticketDirectoryPath string) error {
 	if err != nil {
 		return err
 	}
-
 	for _, file := range files {
+		fmt.Println(file)
+
 		if file.Name() == "recipe.json" {
 			continue
 		}
@@ -107,49 +108,54 @@ func globCopy(recipeDirectoryPath string, ticketDirectoryPath string) error {
 	return nil
 }
 
-func copyListOfFiles(filesToCopy []string, recipeDirectoryPath string, ticketDirectoryPath string) error {
-	if len(filesToCopy) > 0 {
-		if err := fileOrDirectoryExists(recipeDirectoryPath); err != nil {
+func noFilesInTemplateDirectory(files []fs.DirEntry) bool {
+	if len(files) == 1 && files[0].Name() == "recipe.json" {
+		return true
+	}
+	return false
+}
+
+func copyListOfFiles(recipeDirectoryPath string, ticketDirectoryPath string) error {
+	if err := fileOrDirectoryExists(recipeDirectoryPath); err != nil {
+		return err
+	}
+
+	files, err := readDirectory(recipeDirectoryPath)
+	if err != nil {
+		return err
+	}
+	if noFilesInTemplateDirectory(files) {
+		log(fmt.Sprintf("No files to copy: %s", recipeDirectoryPath), "warn")
+		return nil
+	}
+	for _, file := range files {
+		if file.Name() == "recipe.json" {
+			continue
+		}
+		if file.IsDir() {
+			// TODO, implement recursive copy
+			log(fmt.Sprintf("Can't copy directories: %s/", file.Name()), "error")
+			continue
+		}
+		srcFile, err := os.Open(filepath.Join(recipeDirectoryPath, file.Name()))
+
+		if err != nil {
 			return err
 		}
-		var sourceFile string
-		var destinationFile string
+		defer srcFile.Close()
 
-		if isGlobCopy(filesToCopy) {
-			if err := globCopy(recipeDirectoryPath, ticketDirectoryPath); err != nil {
-				return err
-			}
-
-		} else {
-			for _, file := range filesToCopy {
-				sourceFile = filepath.Join(recipeDirectoryPath, file)
-				destinationFile = filepath.Join(ticketDirectoryPath, filepath.Base(file))
-				source, err := os.Open(sourceFile)
-				if err != nil {
-					message := fmt.Sprintf("There was a problem opening the source file: %s", err.Error())
-					log(message, "error")
-					continue
-				}
-				defer source.Close()
-				destination, err := os.Create(destinationFile)
-				if err != nil {
-					message := fmt.Sprintf("There was a problem opening the destination file: %s", err.Error())
-					log(message, "error")
-					continue
-				}
-				defer destination.Close()
-
-				_, err = io.Copy(destination, source)
-				if err != nil {
-					message := fmt.Sprintf("There was a problem copying the file:: %s", err.Error())
-					log(message, "error")
-
-					continue
-				}
-				log(fmt.Sprintf("Copy successful - %s", source.Name()), "success")
-
-			}
+		destFile, err := os.Create(filepath.Join(ticketDirectoryPath, file.Name()))
+		if err != nil {
+			return err
 		}
+		defer destFile.Close()
+
+		_, err = io.Copy(destFile, srcFile)
+		if err != nil {
+			return err
+		}
+		log(fmt.Sprintf("Copy successful - %s", file.Name()), "success")
+
 	}
 
 	return nil

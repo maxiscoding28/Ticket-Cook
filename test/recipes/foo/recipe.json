@@ -1,0 +1,7 @@
+{
+	"filesToCreate": [
+		"scratch.sh",
+		"notes.md"
+	],
+	"filesToCopy": ["*"]
+}

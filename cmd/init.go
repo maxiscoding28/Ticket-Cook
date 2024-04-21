@@ -46,7 +46,7 @@ var initCmd = &cobra.Command{
 
 		if err := fileOrDirectoryExists(ticketDirectoryPath); err == nil {
 			overWritePrompt := fmt.Sprintf("Overwrite existing directory? %s?\nY to overwrite\nN to cancel", ticketDirectoryPath)
-			if err := confirmDirectoryRemove(overWritePrompt, "cancelled", ticketDirectoryPath); err != nil {
+			if err := confirmDirectoryRemove(overWritePrompt, "removed", ticketDirectoryPath); err != nil {
 				fatalError(err)
 			}
 		}
@@ -63,7 +63,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		if err := copyListOfFiles(recipeMap.FilesToCopy, filepath.Join(homeInfo.getRecipesPath(), recipe), ticketDirectoryPath); err != nil {
+		if err := copyListOfFiles(filepath.Join(homeInfo.getRecipesPath(), recipe), ticketDirectoryPath); err != nil {
 			fatalError(err)
 		}
 

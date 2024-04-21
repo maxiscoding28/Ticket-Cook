@@ -18,5 +18,4 @@ type TicketStruct struct {
 
 type RecipeMapStruct struct {
 	FilesToCreate []string `json:"filesToCreate"`
-	FilesToCopy   []string `json:"filesToCopy"`
 }

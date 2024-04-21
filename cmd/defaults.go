@@ -14,8 +14,7 @@ const DefaultRecipeJson = `{
 	"filesToCreate": [
 		"scratch.sh",
 		"notes.md"
-	],
-	"filesToCopy": ["*"]
+	]
 }`
 
 const StarMdFileContent = `
