@@ -2,17 +2,17 @@
 
 # Ticket Cook (tck) 
 
-### Summary
+## Summary
 
-### Installation
+## Installation
 
-### Quick Start
+## Quick Start
 
-### Managing Tickets
+## Managing Tickets
 
-### Managing Recipes
+## Managing Recipes
 
-### Environment Variables
+## Environment Variables
 `TCK_ID`
 - **Description**: Defines the Ticket ID instead of manually specifying it as an argument to the CLI.
 - **Example Usage**: `TCK_ID=1234 tck get`
