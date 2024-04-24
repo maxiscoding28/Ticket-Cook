@@ -3,17 +3,32 @@
 # Ticket Cook (tck) 
 
 ## Summary
-Ticket Cook (tck) is a command line utility for managing ticket-based work. It is designed with support engineers in mind. Its goal is to help manage the complexity of working across multiple tickets at the same time.
+Ticket Cook (tck) is a command line utility for managing ticket-based work. 
+
+It is designed with support engineers in mind. 
+
+Its goal is to help manage the complexity of working across multiple tickets at the same time.
 
 Tck creates and manages three distinc directories that simplify the workflow for managing ticket work:
 
-- `$TCK_HOME_DIR/`: This is the root directory for the application. The default location for this directory is `$HOME/tck`. This location can be changed by setting the environment variables `TCK_HOME_DIR`.
+- `$TCK_HOME_DIR/`
+    - This is the root directory for the application.
+    - The default location for this directory is `$HOME/tck`.
+    - This location can be changed by setting the environment variables `TCK_HOME_DIR`.
 
-- `tickets/`: This directory stores open tickets that are being actively worked on. Newly initialized ticket directories are saved as sub-directories this directory.
+- `tickets/`
+    - This directory stores open tickets that are being actively worked on.
+    - Newly initialized ticket directories are saved as sub-directories this directory.
 
-- `.closed/`: This directory stores closed tickets that are no longer being actively worked on. Running the command `tck close <ticket>` will move a ticket from the `tickets/` directory to the `.closed/` directory. Conversely, running the command `tck reopen <ticket>` will move the ticket from the `closed/` directory back to the `tickets/` directory.
+- `.closed/`
+    - This directory stores closed tickets that are no longer being actively worked on.
+    - Running the command `tck close <ticket>` will move a ticket from the `tickets/` directory to the `.closed/` directory.
+    - Conversely, running the command `tck reopen <ticket>` will move the ticket from the `closed/` directory back to the `tickets/` directory.
 
-- `recipes/`: This directory stores "recipe" directories. Recipe directories can be used as templates when initializing new ticket directories. It copies over the files within the recipe directory to the new ticket directory. This allows users to manage their often-used scripts, notes, "recipes" etc.. for support work in one place. A `recipe.json` file within the directory allows users to create new files as well.
+- `recipes/`
+    - This directory stores "recipe" directories.
+    - Recipe directories can be used as templates when initializing new ticket directories.
+    - When a ticket is initialized with a recipe, all files within the specific recipe directory are copied over to the newly created ticket folder.
 
 **Example Directory structure:**
 ```
@@ -31,7 +46,6 @@ $TCK_HOME_DIR/
     recipes/
         default/
         sev-template/
-            recipe.json/
             sev-cheatsheet.md
             outage-definitions.txt
             meeting-notes.txt
