@@ -11,7 +11,6 @@ import (
 )
 
 func handleOpen(directoryPath string, envVar envVarStruct, nav bool) error {
-
 	if err := fileOrDirectoryExists(directoryPath); err == nil {
 		if err := openDirectory(directoryPath, envVar); err != nil {
 			return err
