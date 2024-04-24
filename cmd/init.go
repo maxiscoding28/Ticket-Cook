@@ -33,8 +33,7 @@ var initCmd = &cobra.Command{
 			fatalError(err)
 		}
 
-		recipeMap, err := configureRecipe(homeInfo.getRecipesPath(), recipe)
-		if err != nil {
+		if err := configureRecipe(homeInfo.getRecipesPath(), recipe); err != nil {
 			fatalError(err)
 		}
 
@@ -56,10 +55,6 @@ var initCmd = &cobra.Command{
 		}
 
 		if err := createMetaJson(ticketDirectoryPath, descriptionFlag, urlFormat, ticket.TicketId); err != nil {
-			fatalError(err)
-		}
-
-		if err := createListOfFiles(recipeMap.FilesToCreate, ticketDirectoryPath); err != nil {
 			fatalError(err)
 		}
 

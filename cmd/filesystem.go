@@ -59,17 +59,6 @@ func readFile(path string) ([]byte, error) {
 	return content, err
 }
 
-func createListOfFiles(filesToCreate []string, ticketDirectoryPath string) error {
-	for _, filename := range filesToCreate {
-		filePath := filepath.Join(ticketDirectoryPath, filename)
-		_, err := os.Create(filePath)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func noFilesInTemplateDirectory(files []fs.DirEntry) bool {
 	if len(files) == 1 && files[0].Name() == "recipe.json" {
 		return true

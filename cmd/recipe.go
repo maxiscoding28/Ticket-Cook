@@ -1,14 +1,12 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
 
-func handleDefaultTemplate(recipeDirectory string, recipeJsonFilePath string) error {
+func handleDefaultTemplate(recipeDirectory string) error {
 	if err := fileOrDirectoryExists(recipeDirectory); err != nil {
 		if isFileNotFoundError(err) {
 			if err := createDirectory(recipeDirectory); err != nil {
@@ -18,47 +16,25 @@ func handleDefaultTemplate(recipeDirectory string, recipeJsonFilePath string) er
 			return err
 		}
 	}
-	if err := fileOrDirectoryExists(recipeJsonFilePath); err != nil {
-		if isFileNotFoundError(err) {
-			if err := createDefaultRecipe(recipeJsonFilePath); err != nil {
-				return err
-			}
-		} else {
-			return err
-		}
-	}
 	return nil
 }
 
-func configureRecipe(recipePath string, recipeArg string) (*RecipeMapStruct, error) {
+func configureRecipe(recipePath string, recipeArg string) error {
 	recipeDirectory := getRecipeDirectory(recipePath, recipeArg)
-	recipeJsonFilePath := getRecipeJsonFilePath(recipeDirectory)
 
 	if recipeArgIsDefault(recipeArg) {
-		if err := handleDefaultTemplate(recipeDirectory, recipeJsonFilePath); err != nil {
-			return nil, err
+		if err := handleDefaultTemplate(recipeDirectory); err != nil {
+			return err
 		}
 	}
 
 	if err := fileOrDirectoryExists(recipeDirectory); err != nil {
 		if isFileNotFoundError(err) {
-			return nil, fmt.Errorf("recipe directory doesn't exist: %s", recipeDirectory)
+			return fmt.Errorf("recipe directory doesn't exist: %s", recipeDirectory)
 		}
-		return nil, err
+		return err
 	}
-	if err := fileOrDirectoryExists(recipeJsonFilePath); err != nil {
-		if isFileNotFoundError(err) {
-			return nil, fmt.Errorf("directory has no `recipe.json` file: %s", recipeDirectory)
-		}
-		return nil, err
-	}
-
-	recipeMap, err := recipeIsValid(recipeJsonFilePath)
-	if err != nil {
-		return nil, err
-	}
-
-	return recipeMap, nil
+	return nil
 }
 
 func getRecipeDirectory(recipePath string, recipeArg string) string {
@@ -71,26 +47,6 @@ func getRecipeJsonFilePath(recipeDirectory string) string {
 
 func recipeArgIsDefault(recipeArg string) bool {
 	return recipeArg == "default"
-}
-
-func createDefaultRecipe(recipeFilePath string) error {
-	if err := createFileWithContent(recipeFilePath, DefaultRecipeJson); err != nil {
-		return err
-	}
-	return nil
-}
-
-func recipeIsValid(pathToRecipe string) (*RecipeMapStruct, error) {
-	content, err := os.ReadFile(pathToRecipe)
-	if err != nil {
-		return nil, err
-	}
-	var data RecipeMapStruct
-	if err := json.Unmarshal(content, &data); err != nil {
-		return nil, err
-	}
-
-	return &data, nil
 }
 
 var recipeCmd = &cobra.Command{

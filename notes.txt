@@ -3,14 +3,16 @@
 - Readme finished with Docs
 
 0.1
-
 Refactor Copy, for recursive copying
 
 Comma separated recipes
+Add-recipe
+
 
 Autocompletion
 
 0.2
+
 Backup to file
     - target any combination of tickets,recipes,.closed
 
