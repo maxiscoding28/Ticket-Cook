@@ -63,35 +63,36 @@ $TCK_HOME_DIR/
 curl
 ```
 
-## Quick Start
+## Commands
+
+### Bootstrap
+`tck bootstrap`
+
+- **Relevant environment variables**
+    - `TCK_HOME_DIR` to your desired root directory. By default this will be `$HOME/tck`
+
+### Initialize Ticket Directory
+`tck init`
+
+- **Relevant environment variables**
+    - `TCK_HOME_DIR` to your current working tck home directory. Also consider setting this as a variable in you `.bashrc` or `.zshrc`. By default this will be `$HOME/tck`.
+
+    - `TCK_RECIPE` to reference the recipe to be used in the ticket initialization. This value is overriden by the `--recipe` flag.
+
+    - `TCK_URL_FORMAT` to define the format for the url. This must be an `http` or `https` value. It must contain a `@` character to denote the location that the ticket ID should be interpolated. By default this will be `https://hashicorp.zendesk.com/agent/tickets/@`. Thefore, for a ticket with ID `1234`. The url will navigate to `https://hashicorp.zendesk.com/agent/tickets/1234`.
+
+    - `TCK_ID` to define a ticket ID to be initialized. This value is overriden by the passed argument. For example, in the following command `TCK_ID=9876 tck init 1234`, the ticket ID `1234` will be used.
+- **Available flags**
 ```
-Choose location for home directory
-
-tck bootstrap
-
-tck init ticket
-
-tck ls
-
-tck create template
-
-# populate template with example files
-
-tck init ticket
-
-tck close
-```
-
-### Full List of Commands and Flags
-tck bootstrap
-
-tck init
-    --description, -d
-    --url-format, -u
-    --recipe, -r
+-d, --description string   Provide a short description for the ticket you are creating.
+-h, --help                 help for init
+-r, --recipe string        Use the provided recipe file to initialize the ticket directory.
+-u, --url-format string    Format for generating a URL with the ticket ID. Use @ for the ticket ID location
+``` 
 
 tck ls
     --closed, -c
+
 tck get
     --nav, -n
     --all, -a
@@ -113,29 +114,3 @@ tck recipe get
     --all, -a
 
 tck recipe rm
-
-## Environment Variables
-`TCK_ID`
-- **Description**: Defines the Ticket ID instead of manually specifying it as an argument to the CLI.
-- **Example Usage**: `TCK_ID=1234 tck get`
-- **Available for the following commands:**
-    - `tck init`
-    - `tck get`
-    - `tck close`
-    - `tck reopen`
-    - `tck remove`
-
-`TCK_RECIPE`
-- `tck init`
-
-`TCK_HOME_DIR`
-- **All commands**
-
-`TCK_EDITOR`
-- `tck get`
-- `tck recipe get`
-
-`TCK_URL_FORMAT`
-- `tck init`
-
- 
