@@ -15,9 +15,6 @@ func initializeTemplate(recipePath string) {
 	if err := createDirectory(recipePath); err != nil {
 		fatalError(err)
 	}
-	if err := createFileWithContent(getRecipeJsonFilePath(recipePath), DefaultRecipeJson); err != nil {
-		fatalError(err)
-	}
 	if err := createFileWithContent(filepath.Join(recipePath, "start.md"), StarMdFileContent); err != nil {
 		fatalError(err)
 	}

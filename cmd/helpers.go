@@ -134,7 +134,7 @@ func renderRecipes(path string) {
 		fatalError(err)
 	}
 	t := createTable()
-	appendRecipesToTable(files, t, path)
+	appendRecipesToTable(files, t)
 	t.SetStyle(table.StyleLight)
 	t.Render()
 }

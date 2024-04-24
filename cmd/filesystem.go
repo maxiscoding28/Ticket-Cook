@@ -177,17 +177,12 @@ func isHiddenDirectory(fileName string) bool {
 	return strings.HasPrefix(fileName, ".")
 }
 
-func appendRecipesToTable(files []fs.DirEntry, t table.Writer, path string) {
+func appendRecipesToTable(files []fs.DirEntry, t table.Writer) {
 	t.AppendHeader(table.Row{"Recipes " + emoji.Memo.String()})
 	for i, file := range files {
 		if files[i].IsDir() && !isHiddenDirectory(files[i].Name()) {
-			if err := fileOrDirectoryExists(filepath.Join(path, files[i].Name(), "recipe.json")); err != nil {
-				log(fmt.Sprintf("error reading recipe.json in %s: %v\n", file.Name(), err.Error()), "error")
-				continue
-			} else {
-				data := fmt.Sprintf("- %s", file.Name())
-				t.AppendRow([]interface{}{data})
-			}
+			data := fmt.Sprintf("- %s", file.Name())
+			t.AppendRow([]interface{}{data})
 		}
 	}
 }
