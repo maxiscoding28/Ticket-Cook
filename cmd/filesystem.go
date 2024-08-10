@@ -79,23 +79,39 @@ func copyListOfFiles(recipeDirectoryPath string, ticketDirectoryPath string) err
 		log(fmt.Sprintf("No files to copy: %s", recipeDirectoryPath), "warn")
 		return nil
 	}
+
 	for _, file := range files {
+		srcPath := filepath.Join(recipeDirectoryPath, file.Name())
+		destPath := filepath.Join(ticketDirectoryPath, file.Name())
+
 		if file.Name() == "recipe.json" {
 			continue
 		}
 		if file.IsDir() {
-			// TODO, implement recursive copy
-			log(fmt.Sprintf("Can't copy directories: %s/", file.Name()), "error")
+			// Check if the directory is empty
+			empty, err := isEmptyDirectory(srcPath)
+			if err != nil {
+				return err
+			}
+			if empty {
+				// Create the directory in the destination path
+				if err := os.Mkdir(destPath, os.ModePerm); err != nil {
+					return err
+				}
+				log(fmt.Sprintf("Directory copied - %s/", file.Name()), "success")
+			} else {
+				log(fmt.Sprintf("Directory is not empty and was not copied: %s/", file.Name()), "warn")
+			}
 			continue
 		}
-		srcFile, err := os.Open(filepath.Join(recipeDirectoryPath, file.Name()))
-
+		// Copy the file
+		srcFile, err := os.Open(srcPath)
 		if err != nil {
 			return err
 		}
 		defer srcFile.Close()
 
-		destFile, err := os.Create(filepath.Join(ticketDirectoryPath, file.Name()))
+		destFile, err := os.Create(destPath)
 		if err != nil {
 			return err
 		}
@@ -106,10 +122,17 @@ func copyListOfFiles(recipeDirectoryPath string, ticketDirectoryPath string) err
 			return err
 		}
 		log(fmt.Sprintf("Copy successful - %s", file.Name()), "success")
-
 	}
 
 	return nil
+}
+
+func isEmptyDirectory(path string) (bool, error) {
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		return false, err
+	}
+	return len(entries) == 0, nil
 }
 
 func openDirectory(directoryPath string, envVar envVarStruct) error {
